@@ -7,3 +7,5 @@ Conceito:
 	As playlists estarão disponiveis ao lado como um side menu, e artes adicionais podem ser apresentadas (caso tenham sido desenhadas). (Talvez colocar ficha tbm? Depende).
 
   ^^ Tudo acima pode mudar.
+
+[LINK](https://app.moqups.com/RpiasV7bKRyC8sMDFxtgg62SdNSuaSs3/view/page/a6cb58741) ← Mockup (cores estão sendo decididas no KRITA):P
