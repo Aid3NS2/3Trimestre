@@ -25,6 +25,7 @@ const srv = Bun.serve({
                 return Response.json(data)
             },
         },
+        
 
         "/login": {
             POST: async (req) => {
@@ -37,11 +38,15 @@ const srv = Bun.serve({
                     const data: any = query.get({
                         ":username": body.username
                     })
+                    if (!data) {
+                        return Response.json({ msg: "Usuário não encontrado" }, {status: 404} )
+                    }
                     const isMatch = await Bun.password.verify(body.password, data.password_hash)
                     if (isMatch) {
                         loggedUsers[data.id] = data
+                        return Response.json(isMatch)
                     }
-                return Response.json(isMatch)
+                return Response.json(isMatch, { status: 401 })
             }
         }
     },

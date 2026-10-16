@@ -1,40 +1,55 @@
 <!DOCTYPE html>
-<html lang='pt-BR'>
+<html lang='en'>
 
 <head>
     <meta charset='utf-8'>
-    <title>Exemplo</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Page Title</title>
+    <link rel='stylesheet' href='main.css'>
 </head>
 
 <body>
-    <ul></ul>
 
-    <input type="text" id="nome">
-    <button id="bt-cadastro">cadastrar</button>
+    <form>
+
+        <input type="text" name="login" placeholder="email">
+        <input type="text" name="password" placeholder="senha">
+        <button>entrar</button>
+
+    </form>
 
     <script>
-        const lista = document.querySelector("ul")
-        const inpNome = document.querySelector("#nome")
-        const btCadastro = document.querySelector("#bt-cadastro")
 
-        async function init() {
-            const response = await fetch("/cliente")
-            const data = await response.json()
-            data.forEach(({ nome }) => lista.innerHTML += `<li>${nome}</li>`)
-        }
+        const frmLogin = document.querySelector('form')
 
-        btCadastro.addEventListener('click', async (ev) => {
-            const nome = inpNome.value
-            const response = await fetch("/cliente", {
+        frmLogin.addEventListener("submit", async (ev) => {
+            ev.preventDefault()
+            const response = await fetch("/login", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" }, 
-                body: JSON.stringify({ nome })
+                headers: { "Content-type": "application/json" },
+                body: JSON.stringify({
+                    "username": frmLogin.username.value,
+                    "passwprd": frmLogin.password.value
+                })
             })
-            inpNome.value = ""
-            lista.innerHTML += `<li>${nome}</li>`
+            if (response.status == 404) {
+                alert("Usuário não existente")
+                return
+            }
+            if (response.status == 401) {
+                alert("Senha Incorreta")
+                return
+            }
+
+            if (response.ok) {
+            alert("Usuário logged in :D")
+            return
+            }
+
+            alert("You shouldn't have done that.")
+
         })
 
-        init()
     </script>
 
 </body>
