@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang='pt-BR'>
+
+<head>
+    <meta charset='utf-8'>
+    <title>Exemplo</title>
+</head>
+
+<body>
+    <ul></ul>
+
+    <input type="text" id="nome">
+    <button id="bt-cadastro">cadastrar</button>
+
+    <script>
+        const lista = document.querySelector("ul")
+        const inpNome = document.querySelector("#nome")
+        const btCadastro = document.querySelector("#bt-cadastro")
+
+        async function init() {
+            const response = await fetch("/cliente")
+            const data = await response.json()
+            data.forEach(({ nome }) => lista.innerHTML += `<li>${nome}</li>`)
+        }
+
+        btCadastro.addEventListener('click', async (ev) => {
+            const nome = inpNome.value
+            const response = await fetch("/cliente", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" }, 
+                body: JSON.stringify({ nome })
+            })
+            inpNome.value = ""
+            lista.innerHTML += `<li>${nome}</li>`
+        })
+
+        init()
+    </script>
+
+</body>
+
+</html>

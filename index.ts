@@ -1,14 +1,50 @@
+import frontend from "./index.html"
+import db from "./db.ts"
+
+const loggedUsers: any = {
+
+}
+
 const srv = Bun.serve({
     port: 3000,
     routes: {
-        "/teste": {
-            GET: () => new Response("Wawa!!_get"),
-            PUT: () => new Response("Wawa!!_put"),
-            POST: () => new Response("Wawa!!_post"),
-            DELETE: () => new Response("Wawa!!_delete")
-        }
+        "/": frontend,
 
-    }
+        "/user": {
+            POST: async (req) => {
+                const body = await req.body?.json()
+                const query = db.query(`
+                    INSERT INTO user(username, password_hash)
+                    VALUES(:username, :password_hash)
+                `)
+                const hash = await Bun.password.hash(body.password)
+                const data = query.run({
+                    ":username": body.username,
+                    ":password_hash": hash
+                })
+                return Response.json(data)
+            },
+        },
+
+        "/login": {
+            POST: async (req) => {
+                const body = await req.body?.json()
+                const query = db.query(`
+                    SELECT * FROM user
+                    WHERE username=:username
+                    LIMIT 1
+                    `)
+                    const data: any = query.get({
+                        ":username": body.username
+                    })
+                    const isMatch = await Bun.password.verify(body.password, data.password_hash)
+                    if (isMatch) {
+                        loggedUsers[data.id] = data
+                    }
+                return Response.json(isMatch)
+            }
+        }
+    },
 })
 
-console.log(`Rodando no ${srv.url}`)
+console.log(`Server running on ${srv.url}`)
