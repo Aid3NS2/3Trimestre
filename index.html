@@ -23,15 +23,17 @@
         const frmLogin = document.querySelector('form')
 
         frmLogin.addEventListener("submit", async (ev) => {
+
             ev.preventDefault()
             const response = await fetch("/login", {
                 method: "POST",
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify({
                     "username": frmLogin.username.value,
-                    "passwprd": frmLogin.password.value
+                    "password": frmLogin.password.value
                 })
             })
+
             if (response.status == 404) {
                 alert("Usuário não existente")
                 return
@@ -42,8 +44,8 @@
             }
 
             if (response.ok) {
-            alert("Usuário logged in :D")
-            return
+                window.location.href = "/home"
+                return
             }
 
             alert("You shouldn't have done that.")
