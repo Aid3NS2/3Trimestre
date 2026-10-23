@@ -5,22 +5,32 @@
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <title>Page Title</title>
-    <link rel='stylesheet' href='main.css'>
 </head>
 
 <body>
 
-    <form>
+    <form id="login">
 
-        <input type="text" name="login" placeholder="email">
+        <input type="text" name="username" placeholder="email">
         <input type="text" name="password" placeholder="senha">
         <button>entrar</button>
 
     </form>
 
+    <form id="cadastro">
+
+        <input type="text" name="username" placeholder="email">
+        <input type="text" name="password" placeholder="senha">
+        <button>cadastrar-se</button>
+
+    </form>
+
+
     <script>
 
-        const frmLogin = document.querySelector('form')
+        // login
+        const frmLogin = document.querySelector('#login')
+        const frmCadastro = document.querySelector('#cadastro')
 
         frmLogin.addEventListener("submit", async (ev) => {
 
@@ -51,6 +61,28 @@
             alert("You shouldn't have done that.")
 
         })
+
+        // cadastro
+        frmCadastro.addEventListener("submit", async (ev) => {
+
+            ev.preventDefault()
+            const response = await fetch("/user", {
+                method: "POST",
+                headers: { "Content-type": "application/json" },
+                body: JSON.stringify({
+                    "username": frmCadastro.username.value,
+                    "password": frmCadastro.password.value
+                })
+            })
+
+            if (response.ok) {
+            return alert('Usuário Cadastrado!')
+            }
+
+        })
+
+        
+
 
     </script>
 
