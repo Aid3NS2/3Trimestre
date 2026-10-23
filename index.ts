@@ -17,6 +17,11 @@ const srv = Bun.serve({
                 const query = db.query(`
                     INSERT INTO user(username, password_hash) 
                     VALUES(:username, :password_hash)`)
+
+                // if (!body.username.value.trim() || !body.senha.value.trim()) {
+                //     return Response.json({ msg: "Vazio... Você deveria fazer algo sobre isso." }, { status: 400 })
+                // }
+
                 const hash = await Bun.password.hash(body.password)
                 const data = query.run({ ":username": body.username, ":password_hash": hash })
                 return Response.json(data)
@@ -26,6 +31,11 @@ const srv = Bun.serve({
         "/login": {
             POST: async (req) => {
                 const body = await req.body?.json()
+
+                // if (!body.username.value.trim() || !body.senha.value.trim()) {
+                //         return Response.json({ msg: "Vazio... Você deveria fazer algo sobre isso." }, { status: 400 })
+                //     }
+
                 const query = db.query(`
                     SELECT * FROM user WHERE username=:username LIMIT 1`)
 
@@ -52,7 +62,7 @@ const srv = Bun.serve({
             const ses = req.cookies.get("ses") as string
             const data = loggedUsers[ses]
             if (!ses || !data)
-                return Response.json({ msg: "usuário não logado" }, { status: 401 })
+                return Response.json({ msg: "Usuário não logado" }, { status: 401 })
             return Response.json(data)
         }
     }

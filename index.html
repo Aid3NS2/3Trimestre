@@ -44,6 +44,10 @@
                 })
             })
 
+            if (response.status == 400) {
+                return alert("Vazio... Você deveria fazer algo sobre isso.")
+            }
+
             if (response.status == 404) {
                 alert("Usuário não existente")
                 return
@@ -75,9 +79,13 @@
                 })
             })
 
+
             if (response.ok) {
-            return alert('Usuário Cadastrado!')
+                cadastro.reset()
+                return alert('Usuário Cadastrado!')
             }
+
+            alert("How did we get here?")
 
         })
 
