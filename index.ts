@@ -11,7 +11,7 @@ const srv = Bun.serve({
 
         "/home": home,
 
-        "/user": {
+        "/user": { // <-- Aqui cria o cadastro
             POST: async (req) => {
                 const body = await req.body?.json()
                 const query = db.query(`
@@ -28,7 +28,7 @@ const srv = Bun.serve({
             }
         },
 
-        "/login": {
+        "/login": { //  <-- Aqui o usuário pode fazer login
             POST: async (req) => {
                 const body = await req.body?.json()
 
